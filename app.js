@@ -30,6 +30,51 @@ let wordIdx = 0;
 let charIdx = 0;
 let word = '';
 
+
+function clearWord(word){ //word element
+  for(let char of word.children){
+    char.innerText = '';
+  }
+}
+
+function getBackGroundColor(correctWord, word){
+  const colors = [];
+  const green = 'rgb(84, 177, 84)';
+  const gray = 'rgba(255, 255, 255, 10%)';
+  const yellow = 'rgb(175, 184, 58)';
+  for(let char of word){
+    if(correctWord.indexOf(char) == word.indexOf(char)){
+      colors.push(green);
+    }
+    else if (correctWord.indexOf(char) !== -1){
+      colors.push(yellow);
+    }
+    else{
+      colors.push(gray);
+    }
+  }
+  return colors;
+}
+
+function getBorderColor(correctWord, word){
+  const colors = [];
+  const green = 'rgb(84, 177, 84)';
+  const gray = 'rgba(255, 255, 255, 0.1%)';
+  const yellow = 'rgb(175, 184, 58)';
+  for(let char of word){
+    if(correctWord.indexOf(char) == word.indexOf(char)){
+      colors.push(green);
+    }
+    else if (correctWord.indexOf(char) !== -1){
+      colors.push(yellow);
+    }
+    else{
+      colors.push(gray);
+    }
+  }
+  return colors;
+}
+
 function game(event){
   if(wordIdx !== 6){ 
     if(isLetterValid(event.key.toUpperCase())){
@@ -46,12 +91,27 @@ function game(event){
         document.removeEventListener('keypress', game)
       }
       if(isWordValid(dict, word)){
-        for(let char of words[wordIdx].children){
-          char.style.backgroundColor = 'rgba(255, 255, 255, 10%)';
-          char.style.borderColor = 'rgba(255, 255, 255, 10%)'
-          console.log(char)
+        const colors = getBackGroundColor(correctWord, word);
+        const borderColors = getBorderColor(correctWord, word);
+        for(let i=0; i < 5; i++){
+          let color = colors[i];
+          let borderColor = borderColors[i];
+          words[wordIdx].children[i].style.backgroundColor = color;
+          words[wordIdx].children[i].style.borderColor = borderColor;
         }
+        console.log('ss')
         wordIdx++;
+      }
+      else{
+        for(let char of words[wordIdx].children){
+          char.style.borderColor = 'rgba(255, 255, 255, 10%)';
+        }
+        clearWord(words[wordIdx])
+        console.log(words[wordIdx].classList);
+        words[wordIdx].classList.add('shake')
+        words[wordIdx].addEventListener('animationend', ()=>{
+          words[wordIdx].classList.remove('shake');
+        })
       }
       charIdx = 0;
       word = '';
