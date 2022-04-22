@@ -111,6 +111,13 @@ function game(event){
         }
         console.log('ss')
         wordIdx++;
+        if(wordIdx == 6){
+          const result = document.createElement('div');
+          result.innerText = correctWord;
+          result.classList.add('result');
+          const words = document.querySelector('#words');
+          words.append(result);
+        }
         word=''
         charIdx = 0;
       }
@@ -141,13 +148,6 @@ function game(event){
       }
     }
   }
-  if(wordIdx == 6){
-    const result = document.createElement('div');
-    result.innerText = correctWord;
-    result.classList.add('result');
-    const words = document.querySelector('#words');
-    words.append(result);
-  }
 }
 
-const evtLis = window.addEventListener('keyup', game)
+const evtLis = document.addEventListener('keyup', game)
