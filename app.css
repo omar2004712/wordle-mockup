@@ -85,3 +85,9 @@ body{
     border-radius: 1px;
     margin-top: -20em;
 }
+
+h1{
+    width: fit-content;
+    margin: auto;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}

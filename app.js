@@ -14,7 +14,6 @@ function isWordCorrect(correctWord ,word){
 
 function isWordValid(dict, word){
   if(dict.indexOf(word) === -1){
-    console.log(word);
     return false;
   }
   return true;
@@ -97,7 +96,7 @@ function game(event){
         result.classList.add('result');
         const words = document.querySelector('#words');
         words.append(result);
-        document.removeEventListener('keyup', game)
+        document.removeEventListener('keypress', game)
       }
       if(isWordValid(dict, word)){
         const colors = getBackGroundColor(correctWord, word);
@@ -137,17 +136,19 @@ function game(event){
       }
       
     }
-    else if (event.key == 'Backspace'){
-      if(charIdx != 0){
-        charIdx--;
-        words[wordIdx].children[charIdx].innerText = '';
-        words[wordIdx].children[charIdx].style.borderColor = 'rgba(255, 255, 255, 10%)';
-        const arr = word.split('');
-        arr.pop();
-        word = arr.join('');
-      }
-    }
   }
 }
 
-const evtLis = document.addEventListener('keyup', game)
+document.addEventListener('keypress', game)
+document.addEventListener('keyup', (event)=>{
+  if (event.key == 'Backspace'){
+    if(charIdx != 0){
+      charIdx--;
+      words[wordIdx].children[charIdx].innerText = '';
+      words[wordIdx].children[charIdx].style.borderColor = 'rgba(255, 255, 255, 10%)';
+      const arr = word.split('');
+      arr.pop();
+      word = arr.join('');
+    }
+  }
+})
