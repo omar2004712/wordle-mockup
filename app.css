@@ -1,5 +1,5 @@
 body{
-    background-color: black;
+    background-color: rgba(0,0,0, 90%);
     color:white;
 }
 #words{
@@ -13,7 +13,7 @@ body{
 .word{
     display: grid;
     position: relative;
-    grid-template-columns: repeat(5, 45px);
+    grid-template-columns: repeat(5, 47px);
     align-items: center;
 
 }
@@ -23,11 +23,22 @@ body{
     color: white;
     text-align: center;
     height: 30px;
-    width: 30px;
-    padding: 3px;
-    padding-top: 7px;
+    width: 35px;
+    padding: 5px 3px 7px 2px;
     font-family: Arial, Helvetica, sans-serif;
     perspective: 1000px;
+    font-weight: 550;
+    font-size: 1.2em;
+    perspective: 1000px;
+    transition: transform 0.6s;
+}
+
+.letter{
+    /*transform: scale(1, -1);
+    background-color: white;
+    color: black;*/
+    height: 1fr;
+    width: 1fr;
 }
 
 .shake{
@@ -61,15 +72,15 @@ body{
 
 @keyframes resize {
     0%{
-    width: 30px;
+    width: 35px;
     height: 30px;
     }
     50%{
-        width: 35px;
-        height: 35px;
+        width: 37px;
+        height: 32px;
     }
     100%{
-        width: 30px;
+        width: 35px;
         height: 30px;
     }
 }
@@ -84,6 +95,7 @@ body{
     padding: 5px;
     border-radius: 1px;
     margin-top: -20em;
+    font-weight: 1000;
 }
 
 h1{
