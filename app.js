@@ -1,5 +1,6 @@
-document.querySelector('#words').onselectstart = new Function ("return false")
-document.querySelector('#words').style.cursor = 'default'
+const wordsEl = document.querySelector('#words');
+wordsEl.onselectstart = new Function ("return false")
+wordsEl.style.cursor = 'default'
 let allWords = `ABUSE
 ADULT
 AGENT
@@ -96,8 +97,11 @@ function getBorderColor(correctWord, word){
   return colors;
 }
 
+const result = document.createElement('div');
+result.classList.add('result');
+
 function game(event){
-  if(wordIdx !== 6){ 
+  if(wordIdx !== 6){
     if(isLetterValid(event.key.toUpperCase())){
         if(charIdx <= 4){
           words[wordIdx].querySelectorAll('.char')[charIdx].querySelector('.letter').innerText = event.key.toUpperCase();
@@ -108,38 +112,44 @@ function game(event){
         }
     } 
     else if(event.key.toUpperCase() === 'ENTER'){
-      const result = document.createElement('div');
-      result.classList.add('result');
       if(isWordValid(dict, word)){
         flipLetters(words[wordIdx])
-        {const words = document.querySelector('#words');
         if(correctWord == word){
           result.innerText = 'You Win';
           document.removeEventListener('keypress', game)
-          setTimeout(words.append(result), 1500);
+          setTimeout(wordsEl.append(result), 1500);
         }
-        if(wordIdx == 5){
+        else if(wordIdx == 5){
           result.innerText = correctWord;
-          setTimeout(()=>{words.append(result)}, 1500);
+          setTimeout(()=>{wordsEl.append(result)}, 1500);
           document.removeEventListener('keypress', game)
         }
+        else {
+          result.remove();
         }
         word=''
         charIdx = 0;
         wordIdx++;
       }
       else{
+        
         if(word.length === 5){
           clearWord(words[wordIdx]);
+          result.innerText = 'Word is not in the list';
           charIdx = 0;
           word = '';
           for(let char of words[wordIdx].children){
             char.style.borderColor = 'rgba(255, 255, 255, 10%)';
           }
         }
+        else{
+          result.innerText = 'Not enough letters';
+        }
+        wordsEl.append(result);
+        
         words[wordIdx].classList.add('shake')
         words[wordIdx].addEventListener('animationend', ()=>{
-          words[wordIdx].classList.remove('shake');
+        words[wordIdx].classList.remove('shake');
         })
       }
       
