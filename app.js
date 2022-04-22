@@ -81,6 +81,10 @@ function game(event){
         if(charIdx <= 4){
           words[wordIdx].querySelectorAll('.char')[charIdx].innerText = event.key.toUpperCase();
           words[wordIdx].querySelectorAll('.char')[charIdx].style.borderColor = 'white';
+          words[wordIdx].children[charIdx].classList.add('resize');
+          words[wordIdx].children[charIdx].addEventListener('animationend', ()=>{
+          words[wordIdx].children[charIdx].classList.remove('resize');
+          })
           word+=event.key.toUpperCase();
           charIdx++;
         }
@@ -88,7 +92,12 @@ function game(event){
     else if(event.key.toUpperCase() === 'ENTER'){
       if(isWordCorrect(correctWord, word)){
         console.log("you win");
-        document.removeEventListener('keypress', game)
+        const result = document.createElement('div');
+        result.innerText = 'You Win';
+        result.classList.add('result');
+        const words = document.querySelector('#words');
+        words.append(result);
+        document.removeEventListener('keyup', game)
       }
       if(isWordValid(dict, word)){
         const colors = getBackGroundColor(correctWord, word);
@@ -98,29 +107,47 @@ function game(event){
           let borderColor = borderColors[i];
           words[wordIdx].children[i].style.backgroundColor = color;
           words[wordIdx].children[i].style.borderColor = borderColor;
+          words[wordIdx].children[i].style.transform = 'rotateX(180deg);'
         }
         console.log('ss')
         wordIdx++;
+        word=''
+        charIdx = 0;
       }
       else{
-        for(let char of words[wordIdx].children){
-          char.style.borderColor = 'rgba(255, 255, 255, 10%)';
+        if(word.length === 5){
+          clearWord(words[wordIdx]);
+          charIdx = 0;
+          word = '';
+          for(let char of words[wordIdx].children){
+            char.style.borderColor = 'rgba(255, 255, 255, 10%)';
+          }
         }
-        clearWord(words[wordIdx])
-        console.log(words[wordIdx].classList);
         words[wordIdx].classList.add('shake')
         words[wordIdx].addEventListener('animationend', ()=>{
           words[wordIdx].classList.remove('shake');
         })
       }
-      charIdx = 0;
-      word = '';
+      
     }
+    else if (event.key == 'Backspace'){
+      if(charIdx != 0){
+        charIdx--;
+        words[wordIdx].children[charIdx].innerText = '';
+        words[wordIdx].children[charIdx].style.borderColor = 'rgba(255, 255, 255, 10%)';
+        const arr = word.split('');
+        arr.pop();
+        word = arr.join('');
+      }
+    }
+  }
+  if(wordIdx == 6){
+    const result = document.createElement('div');
+    result.innerText = correctWord;
+    result.classList.add('result');
+    const words = document.querySelector('#words');
+    words.append(result);
   }
 }
 
-const evtLis = document.addEventListener('keypress', game)
-
-
-
-
+const evtLis = window.addEventListener('keyup', game)
