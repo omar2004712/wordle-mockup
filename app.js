@@ -61,9 +61,9 @@ function flipLetters(wordEl) //wordEl
 
 function getBackGroundColor(correctWord, word){
   const colors = [];
-  const green = 'rgb(84, 177, 84)';
+  const green = 'rgb(74, 158, 71)';
   const gray = 'rgba(255, 255, 255, 10%)';
-  const yellow = 'rgba(240, 225, 41, 80%)';
+  const yellow = 'rgb(163, 152, 53)';
   for(let char of word){
     if(correctWord.indexOf(char) == word.indexOf(char)){
       colors.push(green);
@@ -80,9 +80,9 @@ function getBackGroundColor(correctWord, word){
 
 function getBorderColor(correctWord, word){
   const colors = [];
-  const green = 'rgb(84, 177, 84)';
+  const green = 'rgb(74, 158, 71)';
   const gray = 'rgba(255, 255, 255, 0.1%)';
-  const yellow = 'rgba(228, 225, 41, 80%)';
+  const yellow = 'rgb(163, 152, 53)';
   for(let char of word){
     if(correctWord.indexOf(char) == word.indexOf(char)){
       colors.push(green);
