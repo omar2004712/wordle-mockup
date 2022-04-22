@@ -81,11 +81,8 @@ function game(event){
           words[wordIdx].querySelectorAll('.char')[charIdx].innerText = event.key.toUpperCase();
           words[wordIdx].querySelectorAll('.char')[charIdx].style.borderColor = 'white';
           words[wordIdx].children[charIdx].classList.add('resize');
-          words[wordIdx].children[charIdx].addEventListener('animationend', ()=>{
-          words[wordIdx].children[charIdx].classList.remove('resize');
-          })
-          word+=event.key.toUpperCase();
           charIdx++;
+          word+=event.key.toUpperCase();
         }
     } 
     else if(event.key.toUpperCase() === 'ENTER'){
@@ -106,9 +103,7 @@ function game(event){
           let borderColor = borderColors[i];
           words[wordIdx].children[i].style.backgroundColor = color;
           words[wordIdx].children[i].style.borderColor = borderColor;
-          words[wordIdx].children[i].style.transform = 'rotateX(180deg);'
         }
-        console.log('ss')
         wordIdx++;
         if(wordIdx == 6){
           const result = document.createElement('div');
@@ -145,6 +140,7 @@ document.addEventListener('keyup', (event)=>{
     if(charIdx != 0){
       charIdx--;
       words[wordIdx].children[charIdx].innerText = '';
+      words[wordIdx].children[charIdx].classList.remove('resize');
       words[wordIdx].children[charIdx].style.borderColor = 'rgba(255, 255, 255, 10%)';
       const arr = word.split('');
       arr.pop();
