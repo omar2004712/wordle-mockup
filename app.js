@@ -59,6 +59,15 @@ function flipLetters(wordEl) //wordEl
 }
 
 
+function isWordCorrect(wordEl, correctWord){
+  let word = '';
+  for(char in wordEl.children){
+    word+=char.querySelector('.letter').innerText;
+  }
+  return word === correctWord;
+}
+
+
 function getBackGroundColor(correctWord, word){
   const colors = [];
   const green = 'rgb(74, 158, 71)';
@@ -114,7 +123,7 @@ function game(event){
     else if(event.key.toUpperCase() === 'ENTER'){
       if(isWordValid(dict, word)){
         flipLetters(words[wordIdx])
-        if(correctWord == word){
+        if(isWordCorrect(words[wordIdx], correctWord)){
           result.innerText = 'You Win';
           document.removeEventListener('keypress', game)
           setTimeout(wordsEl.append(result), 1500);
