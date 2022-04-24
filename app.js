@@ -1,3 +1,5 @@
+{ //to take access for correct word from the console
+  //since the code is not in the window object the user will not be able to access the correct word from the console.
 const wordsEl = document.querySelector('#words');
 wordsEl.onselectstart = new Function ("return false")
 wordsEl.style.cursor = 'default'
@@ -30,11 +32,10 @@ function isLetterValid(char){
 const words = document.querySelectorAll('.word');
 let wordIdx = 0;
 let charIdx = 0;
-let word = '';
 
 
-function clearWord(word){ //word element
-  for(let char of word.children){
+function clearWord(wordEl){ //word element
+  for(let char of wordEl.children){
     char.querySelector('.letter').innerText = '';
     char.classList.remove('resize')
   }
@@ -43,8 +44,8 @@ function clearWord(word){ //word element
 
 function flipLetters(wordEl) //wordEl
 {
-  const colors = getBackGroundColor(correctWord, word);
-  const borderColors = getBorderColor(correctWord, word);
+  const colors = getBackGroundColor(correctWord, wordEl);
+  const borderColors = getBorderColor(correctWord, wordEl);
   for(let i = 0; i < wordEl.children.length; i++){
     setTimeout(()=>{
       let char = wordEl.children[i];
@@ -59,20 +60,27 @@ function flipLetters(wordEl) //wordEl
 }
 
 
-function isWordCorrect(wordEl, correctWord){
+function getWord(wordEl){
   let word = '';
-  for(char in wordEl.children){
+  for(const char of wordEl.children){
     word+=char.querySelector('.letter').innerText;
   }
+  return word;
+}
+
+
+function isWordCorrect(wordEl, correctWord){
+  const word = getWord(wordEl);
   return word === correctWord;
 }
 
 
-function getBackGroundColor(correctWord, word){
+function getBackGroundColor(correctWord, wordEl){
   const colors = [];
   const green = 'rgb(74, 158, 71)';
   const gray = 'rgba(255, 255, 255, 10%)';
   const yellow = 'rgb(163, 152, 53)';
+  const word = getWord(wordEl);
   for(let char of word){
     if(correctWord.indexOf(char) == word.indexOf(char)){
       colors.push(green);
@@ -87,11 +95,12 @@ function getBackGroundColor(correctWord, word){
   return colors;
 }
 
-function getBorderColor(correctWord, word){
+function getBorderColor(correctWord, wordEl){
   const colors = [];
   const green = 'rgb(74, 158, 71)';
   const gray = 'rgba(255, 255, 255, 0.1%)';
   const yellow = 'rgb(163, 152, 53)';
+  const word = getWord(wordEl);
   for(let char of word){
     if(correctWord.indexOf(char) == word.indexOf(char)){
       colors.push(green);
@@ -117,11 +126,10 @@ function game(event){
           words[wordIdx].querySelectorAll('.char')[charIdx].style.borderColor = 'white';
           words[wordIdx].children[charIdx].classList.add('resize');
           charIdx++;
-          word+=event.key.toUpperCase();
         }
     } 
     else if(event.key.toUpperCase() === 'ENTER'){
-      if(isWordValid(dict, word)){
+      if(isWordValid(dict, getWord(words[wordIdx]))){
         flipLetters(words[wordIdx])
         if(isWordCorrect(words[wordIdx], correctWord)){
           result.innerText = 'You Win';
@@ -136,17 +144,15 @@ function game(event){
         else {
           result.remove();
         }
-        word=''
         charIdx = 0;
         wordIdx++;
       }
       else{
         
-        if(word.length === 5){
+        if(getWord(words[wordIdx]).length === 5){
           clearWord(words[wordIdx]);
           result.innerText = 'Word is not in the list';
           charIdx = 0;
-          word = '';
           for(let char of words[wordIdx].children){
             char.style.borderColor = 'rgba(255, 255, 255, 10%)';
           }
@@ -174,9 +180,7 @@ document.addEventListener('keyup', (event)=>{
       words[wordIdx].children[charIdx].querySelector('.letter').innerText = '';
       words[wordIdx].children[charIdx].classList.remove('resize');
       words[wordIdx].children[charIdx].style.borderColor = 'rgba(255, 255, 255, 10%)';
-      const arr = word.split('');
-      arr.pop();
-      word = arr.join('');
     }
   }
 })
+}
