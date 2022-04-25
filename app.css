@@ -1,9 +1,10 @@
 body{
     background-color: rgba(0,0,0, 90%);
     color:white;
+    transition: 0.3s;
 }
 #words{
-    margin-top: 50px;
+    margin-top: 20px;
     display: grid;
     justify-content: center;
     grid-template-rows: repeat(6, 50px);
@@ -13,14 +14,13 @@ body{
 .word{
     display: grid;
     position: relative;
-    grid-template-columns: repeat(5, 47px);
+    grid-template-columns: repeat(5, 48px);
     align-items: center;
 
 }
 
 .char{
-    border: 2px solid rgba(255, 255, 255, 10%);
-    color: white;
+    border: 2px solid rgb(107, 104, 104);
     text-align: center;
     height: 30px;
     width: 35px;
@@ -95,6 +95,7 @@ body{
     padding: 5px;
     border-radius: 1px;
     margin-top: -20em;
+    border: 1px solid black;
     font-weight: 1000;
 }
 
@@ -103,3 +104,72 @@ h1{
     margin: auto;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
+
+.hLine{
+    position: relative;
+    bottom: 25px;
+    border: 1px solid white;
+    width: 100%;
+}
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    bottom: 25px;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+  }
+
+  .mode{
+      position: relative;
+      bottom: 25px;
+      left: 5px;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      font-weight:1000;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    border-radius: 34px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    transition: 0.2s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    border-radius: 50%;
+    height:13px;
+    width: 13px;
+    left: 4px;
+    bottom: 3.53px;
+    background-color: black;
+    transition: 0.2s;
+  }
+  
+  input:checked + .slider {
+    background-color: #000000;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(19px);
+    background-color: white;
+  }
+
+  input:checked + .mode{
+      color: #000000;
+  }

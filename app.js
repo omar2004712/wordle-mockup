@@ -3,8 +3,10 @@
   const wordsEl = document.querySelector('#words');
   wordsEl.onselectstart = new Function ("return false")
   wordsEl.style.cursor = 'default'
+  let bColor = 'white';
   let allWords = `ABUSE ADULT AGENT ANGER APPLE AWARD BASIS BEACH BIRTH`
   const dict = allWords.split(' ')
+  const chars = [];
 
   const correctWord = dict[Math.floor(Math.random()*dict.length)];
 
@@ -45,9 +47,13 @@
         setTimeout(()=>{char.style.backgroundColor = colors[i];
         char.style.borderColor = borderColors[i];
         char.querySelector('.letter').style.transform = 'scale(1, -1)';
+        char.style.color = "white";
         }, 150)
       }, 
         200*i)
+    }
+    for(let i = 0; i < 5; i++){
+      chars.pop();
     }
   }
 
@@ -70,7 +76,7 @@
   function getBackGroundColor(correctWord, wordEl){
     const colors = [];
     const green = 'rgb(74, 158, 71)';
-    const gray = 'rgba(255, 255, 255, 10%)';
+    const gray = 'rgb(107, 104, 104';
     const yellow = 'rgb(163, 152, 53)';
     const word = getWord(wordEl);
     for(let char of word){
@@ -115,7 +121,8 @@
       if(isLetterValid(event.key.toUpperCase())){
           if(charIdx <= 4){
             words[wordIdx].querySelectorAll('.char')[charIdx].querySelector('.letter').innerText = event.key.toUpperCase();
-            words[wordIdx].querySelectorAll('.char')[charIdx].style.borderColor = 'white';
+            words[wordIdx].querySelectorAll('.char')[charIdx].style.borderColor = bColor;
+            chars.push(words[wordIdx].querySelectorAll('.char')[charIdx]);
             words[wordIdx].children[charIdx].classList.add('resize');
             charIdx++;
           }
@@ -146,7 +153,10 @@
             result.innerText = 'Word is not in the list';
             charIdx = 0;
             for(let char of words[wordIdx].children){
-              char.style.borderColor = 'rgba(255, 255, 255, 10%)';
+              char.style.borderColor = 'rgb(107, 104, 104)';
+            }
+            for(let i = 0; i < 5; i++){
+              chars.pop();
             }
           }
           else{
@@ -171,8 +181,40 @@
         charIdx--;
         words[wordIdx].children[charIdx].querySelector('.letter').innerText = '';
         words[wordIdx].children[charIdx].classList.remove('resize');
-        words[wordIdx].children[charIdx].style.borderColor = 'rgba(255, 255, 255, 10%)';
+        words[wordIdx].children[charIdx].style.borderColor = 'rgb(107, 104, 104';
+        chars.pop();
+      }
+    }
+  })
+
+  const cb = document.querySelector('input');
+  const mode = document.querySelector('.mode');
+  const body = document.body;
+  const hLine = document.querySelector('.hLine');
+
+  cb.addEventListener('change', (e)=>{
+    if(e.target.checked){
+      mode.style.color = 'black';
+      body.style.background = 'white';
+      body.style.color = "black"
+      bColor = 'black';
+      mode.innerText = "LIGHT MODE";
+      hLine.style.borderColor = 'black';
+      for(let char of chars){
+        char.style.borderColor = 'black';
+      }
+    }
+    else{
+      mode.style.color = 'white';
+      body.style.backgroundColor = 'rgba(0,0,0, 90%)';
+      body.style.color = "white";
+      bColor = 'white';
+      mode.innerText = "DARK MODE";
+      hLine.style.borderColor = 'white';
+      for(let char of chars){
+        char.style.borderColor = 'white';
       }
     }
   })
 }
+
