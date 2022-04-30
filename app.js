@@ -1,4 +1,4 @@
-{ //to take access for correct word from the console
+{//to take access for correct word from the console
   //since the code is not in the window object the user will not be able to access the correct word from the console.
   const wordsEl = document.querySelector('#words');
   wordsEl.onselectstart = new Function ("return false")
@@ -9,7 +9,6 @@
   const chars = [];
 
   const correctWord = dict[Math.floor(Math.random()*dict.length)];
-
 
   function isWordValid(dict, word){
     if(dict.indexOf(word) === -1){
@@ -43,7 +42,7 @@
     for(let i = 0; i < wordEl.children.length; i++){
       setTimeout(()=>{
         let char = wordEl.children[i];
-        char.style.transform = 'rotateX(180deg)';
+        char.style.transform = 'scale(1, -1)';
         setTimeout(()=>{char.style.backgroundColor = colors[i];
         char.style.borderColor = borderColors[i];
         char.querySelector('.letter').style.transform = 'scale(1, -1)';
@@ -72,18 +71,44 @@
     return word === correctWord;
   }
 
+  function getAllIndexes(arr, el){
+    const indexes = [];
+    for(let i = 0; i < arr.length; i++){
+      if(arr[i] === el){
+        indexes.push(i);
+      }
+    }
+    return indexes;
+  }
+
+  function isYellow(correctWord, word, index){
+    let indices = getAllIndexes(word, word[index]);
+    if(indices.length > 1){
+      for(let index of indices){
+        if(correctWord[index] === word[index]){ // check is there a green letter after the index
+          return false;
+        }
+      }
+    }
+    else if(correctWord.indexOf(word[index]) != -1){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 
   function getBackGroundColor(correctWord, wordEl){
     const colors = [];
     const green = 'rgb(74, 158, 71)';
     const gray = 'rgb(107, 104, 104';
     const yellow = 'rgb(163, 152, 53)';
-    const word = getWord(wordEl);
-    for(let char of word){
-      if(correctWord.indexOf(char) == word.indexOf(char)){
+    const word = getWord(wordEl).split('');
+    for(let i = 0; i < 5; i++){
+      if(correctWord[i] === word[i]){
         colors.push(green);
       }
-      else if (correctWord.indexOf(char) !== -1){
+      else if (isYellow(correctWord, word, i)){
         colors.push(yellow);
       }
       else{
@@ -99,11 +124,11 @@
     const gray = 'rgba(255, 255, 255, 0.1%)';
     const yellow = 'rgb(163, 152, 53)';
     const word = getWord(wordEl);
-    for(let char of word){
-      if(correctWord.indexOf(char) == word.indexOf(char)){
+    for(let i = 0; i < 5; i++){
+      if(correctWord[i] === word[i]){
         colors.push(green);
       }
-      else if (correctWord.indexOf(char) !== -1){
+      else if (isYellow(correctWord, word, i)){
         colors.push(yellow);
       }
       else{
@@ -119,6 +144,7 @@
   function game(event){
     if(wordIdx !== 6){
       if(isLetterValid(event.key.toUpperCase())){
+          result.remove();
           if(charIdx <= 4){
             words[wordIdx].querySelectorAll('.char')[charIdx].querySelector('.letter').innerText = event.key.toUpperCase();
             words[wordIdx].querySelectorAll('.char')[charIdx].style.borderColor = bColor;
@@ -182,6 +208,7 @@
         words[wordIdx].children[charIdx].querySelector('.letter').innerText = '';
         words[wordIdx].children[charIdx].classList.remove('resize');
         words[wordIdx].children[charIdx].style.borderColor = 'rgb(107, 104, 104';
+        result.remove();
         chars.pop();
       }
     }
@@ -191,7 +218,9 @@
   const mode = document.querySelector('.mode');
   const body = document.body;
   const hLine = document.querySelector('.hLine');
-
+  if(window.innerWidth >= 500){
+    mode.style.opacity = "1";
+  }
   cb.addEventListener('change', (e)=>{
     if(e.target.checked){
       mode.style.color = 'black';
@@ -200,6 +229,8 @@
       bColor = 'black';
       mode.innerText = "LIGHT MODE";
       hLine.style.borderColor = 'black';
+      result.style.backgroundColor = "black";
+      result.style.color = "white";
       for(let char of chars){
         char.style.borderColor = 'black';
       }
@@ -211,9 +242,22 @@
       bColor = 'white';
       mode.innerText = "DARK MODE";
       hLine.style.borderColor = 'white';
+      result.style.backgroundColor = "white";
+      result.style.color = "black";
       for(let char of chars){
         char.style.borderColor = 'white';
       }
+    }
+  })
+
+  const modeContainerEl = document.querySelector('#mode-container')
+
+  window.addEventListener('resize', (e)=>{
+    if(window.innerWidth < 500){
+      mode.style.opacity = "0";
+    }
+    else {    
+      mode.style.opacity = "1";
     }
   })
 }

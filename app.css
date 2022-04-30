@@ -4,17 +4,16 @@ body{
     transition: 0.3s;
 }
 #words{
-    margin-top: 20px;
     display: grid;
     justify-content: center;
-    grid-template-rows: repeat(6, 50px);
+    grid-template-rows: repeat(6, 54px);
     height: 300px;
     font-size: 1.5em;
 }
 .word{
     display: grid;
     position: relative;
-    grid-template-columns: repeat(5, 48px);
+    grid-template-columns: repeat(5, 52px);
     align-items: center;
 
 }
@@ -24,7 +23,7 @@ body{
     text-align: center;
     height: 30px;
     width: 35px;
-    padding: 5px 3px 7px 2px;
+    padding: 7px 5px 9px 4px;
     font-family: Arial, Helvetica, sans-serif;
     perspective: 1000px;
     font-weight: 550;
@@ -72,16 +71,13 @@ body{
 
 @keyframes resize {
     0%{
-    width: 35px;
-    height: 30px;
+        padding: 7px 5px 9px 4px;
     }
     50%{
-        width: 37px;
-        height: 32px;
+        padding: 9px 7px 11px 6px;
     }
     100%{
-        width: 35px;
-        height: 30px;
+        padding: 7px 5px 9px 4px;
     }
 }
 
@@ -92,11 +88,12 @@ body{
     color: black;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 0.7em;
-    padding: 5px;
-    border-radius: 1px;
-    margin-top: -20em;
-    border: 1px solid black;
+    padding: 10px;
+    border-radius: 3px;
+    margin-top: -18em;
+    /*border: 1px solid black;*/
     font-weight: 1000;
+    z-index: 0;
 }
 
 h1{
@@ -123,10 +120,15 @@ h1{
 
   .mode{
       position: relative;
+      text-align: right;
+      max-width: fit-content;
+      width: fit-content;
       bottom: 25px;
       left: 5px;
       font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
       font-weight:1000;
+      opacity: 0;
+      transition: 0.3s;
   }
   
   /* Hide default HTML checkbox */
@@ -172,4 +174,18 @@ h1{
 
   input:checked + .mode{
       color: #000000;
+  }
+
+  .fade-out{
+      animation: fadeOut 0.3s;
+      opacity: 0;
+  }
+
+  @keyframes fadeOut {
+      0%{
+          opacity: 100%;
+      }
+      100%{
+          opacity: 0%;
+      }
   }
