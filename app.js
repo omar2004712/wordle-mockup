@@ -2641,10 +2641,8 @@ zones`.toUpperCase()
   result.classList.add('result');
 
   function game(event){
-    console.log(event.key)
     if(wordIdx !== 6){
       if(isLetterValid(event.key.toUpperCase())){
-          console.log(event.key)
           result.remove();
           if(charIdx <= 4){
             words[wordIdx].querySelectorAll('.char')[charIdx].querySelector('.letter').innerText = event.key.toUpperCase();
