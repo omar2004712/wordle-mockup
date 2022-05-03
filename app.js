@@ -1,4 +1,4 @@
-{
+
   //to take access for correct word from the console
   //since the code is not in the window object the user will not be able to access the correct word from the console.
   const wordsEl = document.querySelector('#words');
@@ -2641,8 +2641,10 @@ zones`.toUpperCase()
   result.classList.add('result');
 
   function game(event){
+    console.log(event.key)
     if(wordIdx !== 6){
       if(isLetterValid(event.key.toUpperCase())){
+          console.log(event.key)
           result.remove();
           if(charIdx <= 4){
             words[wordIdx].querySelectorAll('.char')[charIdx].querySelector('.letter').innerText = event.key.toUpperCase();
@@ -2653,33 +2655,31 @@ zones`.toUpperCase()
           }
       } 
       else if(event.key.toUpperCase() === 'ENTER'){
-        if(charIdx === 6){
-        if(isWordValid(dict, getWord(words[wordIdx]))){
-          document.removeEventListener('keypress', game);
-          flipLetters(words[wordIdx])
-          setTimeout(() => {
-            document.addEventListener('keypress', game);
-            if(isWordCorrect(words[wordIdx], correctWord)){
-              result.innerText = 'You Win';
-              document.removeEventListener('keypress', game)
-              setTimeout(wordsEl.append(result), 1500);
-            }
-            else if(wordIdx == 5){
-              result.innerText = correctWord;
-              setTimeout(()=>{wordsEl.append(result)}, 1500);
-              document.removeEventListener('keypress', game)
-            }
-            else {
-              result.remove();
-            }
-            charIdx = 0;
-            wordIdx++;
-          }, 1100);
-        }
-        }
+        if(charIdx === 5){
+          if(isWordValid(dict, getWord(words[wordIdx]))){
+            document.removeEventListener('keypress', game);
+            flipLetters(words[wordIdx])
+            setTimeout(() => {
+              if(isWordCorrect(words[wordIdx], correctWord)){
+                result.innerText = 'You Win';
+                document.removeEventListener('keypress', game)
+                setTimeout(wordsEl.append(result), 1500);
+              }
+              else if(wordIdx == 5){
+                document.addEventListener('keypress', game);
+                result.innerText = correctWord;
+                setTimeout(()=>{wordsEl.append(result)}, 1500);
+                document.removeEventListener('keypress', game)
+              }
+              else {
+                document.addEventListener('keypress', game);
+                result.remove();
+              }
+              charIdx = 0;
+              wordIdx++;
+            }, 1100);
+          }
         else{
-          
-          if(getWord(words[wordIdx]).length === 5){
             clearWord(words[wordIdx]);
             result.innerText = 'Word is not in the list';
             charIdx = 0;
@@ -2689,25 +2689,36 @@ zones`.toUpperCase()
             for(let i = 0; i < 5; i++){
               chars.pop();
             }
+            wordsEl.append(result);
+            setTimeout(() => {
+              result.classList.add('fade-out')
+              setTimeout(()=>{
+                result.remove();
+                result.classList.remove('fade-out')
+              }, 300);
+            }, 3000);
+            
+            words[wordIdx].classList.add('shake')
+            words[wordIdx].addEventListener('animationend', ()=>{
+            words[wordIdx].classList.remove('shake');
+            })
           }
-          else{
-            result.innerText = 'Not enough letters';
-          }
-          wordsEl.append(result);
+        }
+        else{
+          result.innerText = 'Not enough letters';
+          wordsEl.append(result)
           setTimeout(() => {
-            result.classList.add('fade-out')
+            result.classList.add('fade-out');
             setTimeout(()=>{
               result.remove();
               result.classList.remove('fade-out')
-            }, 300);
+            }, 300)
           }, 3000);
-          
           words[wordIdx].classList.add('shake')
           words[wordIdx].addEventListener('animationend', ()=>{
           words[wordIdx].classList.remove('shake');
           })
         }
-        
       }
     }
   }
@@ -2773,4 +2784,3 @@ zones`.toUpperCase()
       mode.style.opacity = "1";
     }
   })
-}
