@@ -2506,6 +2506,9 @@ youth
 yummy
 zones`.toUpperCase()
 
+  const green = '#538d4e';
+  let gray = '#3a3a3c';
+  const yellow = '#b59f3b';
 
   const dict = allWords.split('\n');
   const chars = [];
@@ -2602,9 +2605,6 @@ zones`.toUpperCase()
 
   function getBackGroundColor(correctWord, wordEl){
     const colors = [];
-    const green = 'rgb(74, 158, 71)';
-    const gray = 'rgb(107, 104, 104';
-    const yellow = 'rgb(163, 152, 53)';
     const word = getWord(wordEl).split('');
     for(let i = 0; i < 5; i++){
       if(correctWord[i] === word[i]){
@@ -2622,9 +2622,6 @@ zones`.toUpperCase()
 
   function getBorderColor(correctWord, wordEl){
     const colors = [];
-    const green = 'rgb(74, 158, 71)';
-    const gray = 'rgba(255, 255, 255, 0.1%)';
-    const yellow = 'rgb(163, 152, 53)';
     const word = getWord(wordEl);
     for(let i = 0; i < 5; i++){
       if(correctWord[i] === word[i]){
@@ -2656,6 +2653,7 @@ zones`.toUpperCase()
           }
       } 
       else if(event.key.toUpperCase() === 'ENTER'){
+        if(charIdx === 6){
         if(isWordValid(dict, getWord(words[wordIdx]))){
           document.removeEventListener('keypress', game);
           flipLetters(words[wordIdx])
@@ -2677,6 +2675,7 @@ zones`.toUpperCase()
             charIdx = 0;
             wordIdx++;
           }, 1100);
+        }
         }
         else{
           
