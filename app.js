@@ -1,10 +1,21 @@
-
+{
   //to take access for correct word from the console
   //since the code is not in the window object the user will not be able to access the correct word from the console.
   const wordsEl = document.querySelector('#words');
+  const results = document.querySelector('.results');
+  let msgBackgroundColor = 'white';
+  let msgColor = "black"
+  const msgNotFinish = document.createElement('div');
+  msgNotFinish.classList.add('result');
+  msgNotFinish.innerText = 'Not enough letters';
+  const wordIncorrect = document.createElement('div');
+  wordIncorrect.classList.add('result');
+  wordIncorrect.innerText = 'Word is not in the list';
   wordsEl.onselectstart = new Function ("return false")
   wordsEl.style.cursor = 'default'
-  let bColor = 'white';
+  const grayChars = [];
+  let bColorChecked = 'rgba(255, 255, 255, 0.2)';
+  let bColorNotChecked = 'rgb(71, 71, 71, 0.5)';
   const allWords =`
 aback
 abase
@@ -2571,6 +2582,18 @@ zones`.toUpperCase()
   }
 
 
+  function copyEl(el){
+    const copied = document.createElement(el.localName);
+    copied.innerHTML = el.innerHTML;
+    copied.style.background = msgBackgroundColor;
+    copied.style.color = msgColor;
+    for(let elClass of el.classList){
+      copied.classList.add(elClass)
+    }
+    return copied;    
+  }
+
+
   function isWordCorrect(wordEl, correctWord){
     const word = getWord(wordEl);
     return word === correctWord;
@@ -2614,6 +2637,7 @@ zones`.toUpperCase()
         colors.push(yellow);
       }
       else{
+        grayChars.push(wordEl.children[i]);
         colors.push(gray);
       }
     }
@@ -2646,7 +2670,7 @@ zones`.toUpperCase()
           result.remove();
           if(charIdx <= 4){
             words[wordIdx].querySelectorAll('.char')[charIdx].querySelector('.letter').innerText = event.key.toUpperCase();
-            words[wordIdx].querySelectorAll('.char')[charIdx].style.borderColor = bColor;
+            words[wordIdx].querySelectorAll('.char')[charIdx].style.borderColor = bColorChecked;
             chars.push(words[wordIdx].querySelectorAll('.char')[charIdx]);
             words[wordIdx].children[charIdx].classList.add('resize');
             charIdx++;
@@ -2661,12 +2685,12 @@ zones`.toUpperCase()
               if(isWordCorrect(words[wordIdx], correctWord)){
                 result.innerText = 'You Win';
                 document.removeEventListener('keypress', game)
-                setTimeout(wordsEl.append(result), 1500);
+                setTimeout(results.prepend(result), 1500);
               }
               else if(wordIdx == 5){
                 document.addEventListener('keypress', game);
                 result.innerText = correctWord;
-                setTimeout(()=>{wordsEl.append(result)}, 1500);
+                setTimeout(()=>{results.prepend(result)}, 1500);
                 document.removeEventListener('keypress', game)
               }
               else {
@@ -2679,22 +2703,20 @@ zones`.toUpperCase()
           }
         else{
             clearWord(words[wordIdx]);
-            result.innerText = 'Word is not in the list';
             charIdx = 0;
             for(let char of words[wordIdx].children){
-              char.style.borderColor = 'rgb(107, 104, 104)';
+              char.style.borderColor = bColorNotChecked;
             }
             for(let i = 0; i < 5; i++){
               chars.pop();
             }
-            wordsEl.append(result);
-            setTimeout(() => {
-              result.classList.add('fade-out')
+            results.prepend(copyEl(wordIncorrect));
+            setTimeout(()=>{
+              results.children[results.children.length - 1].classList.add('fade-out')
               setTimeout(()=>{
-                result.remove();
-                result.classList.remove('fade-out')
-              }, 300);
-            }, 3000);
+                results.children[results.children.length - 1].remove()
+              }, 300)
+            }, 1500)
             
             words[wordIdx].classList.add('shake')
             words[wordIdx].addEventListener('animationend', ()=>{
@@ -2703,15 +2725,13 @@ zones`.toUpperCase()
           }
         }
         else{
-          result.innerText = 'Not enough letters';
-          wordsEl.append(result)
-          setTimeout(() => {
-            result.classList.add('fade-out');
+          results.prepend(copyEl(msgNotFinish));
+          setTimeout(()=>{
+            results.children[results.children.length - 1].classList.add('fade-out')
             setTimeout(()=>{
-              result.remove();
-              result.classList.remove('fade-out')
+              results.children[results.children.length - 1].remove()
             }, 300)
-          }, 3000);
+          }, 1500)
           words[wordIdx].classList.add('shake')
           words[wordIdx].addEventListener('animationend', ()=>{
           words[wordIdx].classList.remove('shake');
@@ -2729,7 +2749,7 @@ zones`.toUpperCase()
         charIdx--;
         words[wordIdx].children[charIdx].querySelector('.letter').innerText = '';
         words[wordIdx].children[charIdx].classList.remove('resize');
-        words[wordIdx].children[charIdx].style.borderColor = 'rgb(107, 104, 104';
+        words[wordIdx].children[charIdx].style.borderColor = bColorNotChecked;
         result.remove();
         chars.pop();
       }
@@ -2748,27 +2768,57 @@ zones`.toUpperCase()
       mode.style.color = 'black';
       body.style.background = 'white';
       body.style.color = "black"
-      bColor = 'black';
+      bColorChecked = 'rgba(0, 0, 0, 0.4)';
+      bColorNotChecked = 'rgba(0, 0, 0, 0.2)'
       mode.innerText = "LIGHT MODE";
       hLine.style.borderColor = 'black';
       result.style.backgroundColor = "black";
       result.style.color = "white";
+      msgBackgroundColor = "black";
+      msgColor = "white";
+      gray = '#787c7e';
+      for(let result of results.children){
+        result.style.backgroundColor = "black";
+        result.style.color = "white";
+      }
+      for(let word of words){
+        for(let char of word.children){
+          char.style.borderColor = 'rgba(0, 0, 0, 0.2)'
+        }
+      }
       for(let char of chars){
-        char.style.borderColor = 'black';
+        char.style.borderColor = 'rgba(0, 0, 0, 0.4)';
       }
     }
     else{
       mode.style.color = 'white';
       body.style.backgroundColor = 'rgba(0,0,0, 90%)';
       body.style.color = "white";
-      bColor = 'white';
+      bColorChecked = 'rgba(255, 255, 255, 0.2)';
+      bColorNotChecked = 'rgb(71, 71, 71, 0.5)';
       mode.innerText = "DARK MODE";
       hLine.style.borderColor = 'white';
       result.style.backgroundColor = "white";
       result.style.color = "black";
-      for(let char of chars){
-        char.style.borderColor = 'white';
+      msgBackgroundColor = "white";
+      msgColor = "black";
+      for(let result of results.children){
+        result.style.backgroundColor = "white";
+        result.style.color = "black";
       }
+      gray = '#3a3a3c';
+      for(let word of words){
+        for(let char of word.children){
+          char.style.borderColor = 'rgba(71, 71, 71, 0.5)'
+        }
+      }
+      for(let char of chars){
+        char.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+      }
+    }
+    for(let char of grayChars){
+      char.style.backgroundColor = gray;
+      char.style.borderColor = gray;
     }
   })
 
@@ -2782,3 +2832,4 @@ zones`.toUpperCase()
       mode.style.opacity = "1";
     }
   })
+}

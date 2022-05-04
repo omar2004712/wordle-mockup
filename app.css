@@ -3,27 +3,32 @@ body{
     color:white;
     transition: 0.3s;
 }
+
+#words-container{
+}
+
 #words{
+    margin-left: 10px;
     display: grid;
     justify-content: center;
-    grid-template-rows: repeat(6, 54px);
+    grid-template-rows: repeat(6, 65px);
     height: 300px;
     font-size: 1.5em;
 }
 .word{
     display: grid;
     position: relative;
-    grid-template-columns: repeat(5, 52px);
+    grid-template-columns: repeat(5, 63px);
     align-items: center;
 
 }
 
 .char{
-    border: 2px solid rgb(107, 104, 104);
+    border: 1px solid rgb(71, 71, 71, 0.5); /*rgba(129, 129, 129, 0.5);*/
     text-align: center;
-    height: 30px;
-    width: 35px;
-    padding: 7px 5px 9px 4px;
+    height: 35px;
+    width: 40px;
+    padding: 12px 9px 12px 8px;
     font-family: Arial, Helvetica, sans-serif;
     perspective: 1000px;
     font-weight: 550;
@@ -33,9 +38,6 @@ body{
 }
 
 .letter{
-    /*transform: scale(1, -1);
-    background-color: white;
-    color: black;*/
     height: 1fr;
     width: 1fr;
 }
@@ -71,15 +73,24 @@ body{
 
 @keyframes resize {
     0%{
-        padding: 7px 5px 9px 4px;
+        padding: 12px 9px 12px 8px;
     }
     50%{
-        padding: 9px 7px 11px 6px;
+        padding: 14px 11px 14px 10px;
     }
     100%{
-        padding: 7px 5px 9px 4px;
+        padding: 12px 9px 12px 8px;
     }
 }
+
+.results{
+    height: fit-content;
+    width: fit-content;
+    margin: auto;
+    margin-top: -15em;
+    z-index: 0;
+}
+
 
 .result{
     width: fit-content;
@@ -90,10 +101,10 @@ body{
     font-size: 0.7em;
     padding: 10px;
     border-radius: 3px;
-    margin-top: -18em;
+    margin-bottom: 10px;
     /*border: 1px solid black;*/
     font-weight: 1000;
-    z-index: 0;
+    z-index: 1;
 }
 
 h1{
@@ -106,7 +117,8 @@ h1{
     position: relative;
     bottom: 25px;
     border: 1px solid white;
-    width: 100%;
+    margin-left: -7.9px;
+    width: 102%;
 }
 
 /* The switch - the box around the slider */
@@ -178,7 +190,6 @@ h1{
 
   .fade-out{
       animation: fadeOut 0.3s;
-      opacity: 0;
   }
 
   @keyframes fadeOut {
